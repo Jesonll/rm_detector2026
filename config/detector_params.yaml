@@ -1,0 +1,11 @@
+# Detector parameters
+detector:
+  camera_frame_id: "camera_optical_frame"
+  visualize: true
+  enable_profiler: true
+  max_framerate: 60.0
+
+# ROS2 Topic config
+topics:
+  image_raw: "/image_raw"
+  detections: "/yolo/detections"

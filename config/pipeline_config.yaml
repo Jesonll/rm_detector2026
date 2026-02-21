@@ -1,0 +1,21 @@
+# Pipeline configuration
+pipeline:
+  preprocessor:
+    type: "letterbox"  # Options: letterbox, direct_resize
+    width: 640
+    height: 640
+    stride: 32
+
+  engine:
+    type: "openvino" # Options: tensorrt, openvino
+    model_path: "models/model.onnx"
+    input_layer: "images"
+    output_layer: "output"
+    device: "GPU"  # GPU or CPU
+
+  postprocessor:
+    type: "nms"      # Options: nms, rule_based
+    conf_threshold: 0.5
+    iou_threshold: 0.45
+    max_detections: 100
+    classes: ["armor_red", "armor_blue"]
