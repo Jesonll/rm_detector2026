@@ -6,7 +6,11 @@ namespace pipeline {
 
 class NMSPostprocessor : public IPostprocessor {
 public:
-    std::vector<Detection> process(const std::vector<cv::Mat>& outputs) override;
+    explicit NMSPostprocessor(float nms_threshold = 0.45f);
+    void process(DetectionContext& ctx) override;
+
+private:
+    float nms_threshold_;
 };
 
 }

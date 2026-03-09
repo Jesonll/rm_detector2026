@@ -1,7 +1,6 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
-#include <vector>
+#include "cv_detector/pipeline/types.hpp"
 
 namespace rm_detector2026 {
 namespace pipeline {
@@ -15,10 +14,9 @@ public:
 
     /**
      * @brief Run inference
-     * @param input Preprocessed input tensor (blob)
-     * @return Inference output results (could be raw tensor data or semi-processed)
+     * @param ctx Detection context. Reads ctx.network_input, writes ctx.inference_outputs
      */
-    virtual std::vector<cv::Mat> infer(const cv::Mat& input) = 0;
+    virtual void infer(DetectionContext& ctx) = 0;
 };
 
 } // namespace pipeline

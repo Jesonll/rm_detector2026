@@ -1,16 +1,11 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
-#include <vector>
+#include "cv_detector/pipeline/types.hpp"
+#include <rm_utils/data.h>
+
 
 namespace rm_detector2026 {
 namespace pipeline {
-
-struct Detection {
-    int class_id;
-    float confidence;
-    cv::Rect box;
-};
 
 /**
  * @brief Abstract base class for postprocessing
@@ -20,12 +15,12 @@ public:
     virtual ~IPostprocessor() = default;
 
     /**
-     * @brief Process inference results into detections
-     * @param outputs Raw output from inference engine
-     * @return Vector of detections
+     * @brief Process detections (e.g., NMS)
+     * @param ctx Detection context. Reads and filters ctx.armors
      */
-    virtual std::vector<Detection> process(const std::vector<cv::Mat>& outputs) = 0;
+    virtual void process(DetectionContext& ctx) = 0;
 };
+
 
 } // namespace pipeline
 } // namespace rm_detector2026

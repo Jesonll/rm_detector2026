@@ -2,8 +2,10 @@
 
 #include <memory>
 #include <opencv2/opencv.hpp>
+#include "cv_detector/pipeline/types.hpp"
 #include "cv_detector/pipeline/i_preprocessor.hpp"
 #include "cv_detector/pipeline/i_inference_engine.hpp"
+#include "cv_detector/pipeline/i_decoder.hpp"
 #include "cv_detector/pipeline/i_postprocessor.hpp"
 
 namespace rm_detector2026 {
@@ -13,13 +15,20 @@ class Pipeline {
 public:
     Pipeline(std::shared_ptr<IPreprocessor> pre, 
              std::shared_ptr<IInferenceEngine> engine, 
+             std::shared_ptr<IDecoder> decoder,
              std::shared_ptr<IPostprocessor> post);
 
-    std::vector<Detection> run(const cv::Mat& img);
+    /**
+     * @brief Process an image end-to-end
+     * @param img Original camera image
+     * @return List of detections
+     */
+    std::vector<Armor> run(const cv::Mat& img);
 
 private:
     std::shared_ptr<IPreprocessor> preprocessor_;
     std::shared_ptr<IInferenceEngine> engine_;
+    std::shared_ptr<IDecoder> decoder_;
     std::shared_ptr<IPostprocessor> postprocessor_;
 };
 

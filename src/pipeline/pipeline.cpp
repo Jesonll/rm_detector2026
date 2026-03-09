@@ -5,23 +5,32 @@ namespace pipeline {
 
 Pipeline::Pipeline(std::shared_ptr<IPreprocessor> pre, 
                    std::shared_ptr<IInferenceEngine> engine, 
+                   std::shared_ptr<IDecoder> decoder,
                    std::shared_ptr<IPostprocessor> post)
-    : preprocessor_(pre), engine_(engine), postprocessor_(post) {}
+    : preprocessor_(pre), engine_(engine), decoder_(decoder), postprocessor_(post) {}
 
-std::vector<Detection> Pipeline::run(const cv::Mat& img) {
+std::vector<Armor> Pipeline::run(const cv::Mat& img) {
     if (img.empty()) {
         return {};
     }
+    
+    // Create detection context
+    DetectionContext ctx;
+    ctx.original_image = img;
+    
     // 1. Preprocess
-    auto input_blob = preprocessor_->preprocess(img);
+    preprocessor_->preprocess(ctx);
     
     // 2. Inference
-    auto outputs = engine_->infer(input_blob);
+    engine_->infer(ctx);
     
-    // 3. Postprocess
-    auto detections = postprocessor_->process(outputs);
+    // 3. Decode
+    decoder_->decode(ctx);
+
+    // 4. Postprocess
+    postprocessor_->process(ctx);
     
-    return detections;
+    return ctx.armors;
 }
 
 } // namespace pipeline

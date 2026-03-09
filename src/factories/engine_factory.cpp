@@ -5,12 +5,11 @@ namespace rm_detector2026 {
 namespace factories {
 
 std::shared_ptr<pipeline::IInferenceEngine> EngineFactory::create(const std::string& type, const std::string& model_path) {
-    (void)model_path;
     if (type == "openvino") {
-        return std::make_shared<pipeline::OpenVINOEngine>();
+        return std::make_shared<pipeline::OpenVINOEngine>(model_path);
     }
     // Default
-    return std::make_shared<pipeline::OpenVINOEngine>();
+    return std::make_shared<pipeline::OpenVINOEngine>(model_path);
 }
 
 }

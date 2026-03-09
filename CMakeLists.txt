@@ -5,6 +5,11 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -13,18 +18,23 @@ find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(rm_interfaces REQUIRED)
+find_package(rm_utils REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(OpenVINO REQUIRED)
 
 include_directories(include)
 
 # Add library target (component)
 add_library(${PROJECT_NAME}_lib SHARED
   src/pipeline/pipeline.cpp
-  src/pipeline/preprocessors/letterbox_preprocessor.cpp
+  src/pipeline/preprocessors/yolo_preprocessor.cpp
   src/pipeline/engines/openvino_engine.cpp
   src/pipeline/postprocessors/nms_postprocessor.cpp
+  src/pipeline/decoders/yolo_decoder.cpp
   src/factories/preprocessor_factory.cpp
   src/factories/engine_factory.cpp
+  src/factories/decoder_factory.cpp
   src/factories/postprocessor_factory.cpp
   src/node/detector_node.cpp
 )
@@ -42,15 +52,20 @@ ament_target_dependencies(${PROJECT_NAME}_lib
   sensor_msgs
   image_transport
   std_msgs
+  rm_interfaces
+  rm_utils
   OpenCV
+)
+target_link_libraries(${PROJECT_NAME}_lib
+  openvino::runtime
 )
 
 # Create standalone executable
 add_executable(${PROJECT_NAME}_node src/node/main.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${PROJECT_NAME}_lib
-  rclcpp
 )
+ament_target_dependencies(${PROJECT_NAME}_node rclcpp)
 
 # Install standalone executable
 install(TARGETS ${PROJECT_NAME}_node
@@ -72,6 +87,11 @@ install(DIRECTORY config
 # Install launch files
 install(DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
+)
+
+# Install test script
+install(PROGRAMS scripts/test_image_feed.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)

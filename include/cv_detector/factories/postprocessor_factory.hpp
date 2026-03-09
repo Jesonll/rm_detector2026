@@ -9,7 +9,8 @@ namespace factories {
 
 class PostprocessorFactory {
 public:
-    static std::shared_ptr<pipeline::IPostprocessor> create(const std::string& type);
+    static std::shared_ptr<pipeline::IPostprocessor> create(const std::string& type, float nms_threshold = 0.45f);
+    static std::shared_ptr<pipeline::IPostprocessor> create(const std::vector<std::string>& types, float nms_threshold = 0.45f);
 };
 
 }

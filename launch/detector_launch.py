@@ -7,7 +7,6 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('rm_detector2026')
     
     config_file = os.path.join(pkg_share, 'config', 'detector_params.yaml')
-    pipeline_config = os.path.join(pkg_share, 'config', 'pipeline_config.yaml')
 
     return LaunchDescription([
         Node(
@@ -15,8 +14,7 @@ def generate_launch_description():
             executable='rm_detector2026_node',
             name='detector_node',
             parameters=[
-                config_file,
-                pipeline_config
+                config_file
             ],
             output='screen'
         )

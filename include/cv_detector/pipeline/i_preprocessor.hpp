@@ -1,7 +1,6 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
-#include <string>
+#include "cv_detector/pipeline/types.hpp"
 
 namespace rm_detector2026 {
 namespace pipeline {
@@ -15,10 +14,10 @@ public:
     
     /**
      * @brief Preprocess methods
-     * @param img Input image (HWC)
-     * @return Preprocessed image and necessary scaling info
+     * @param ctx Detection context containing the original image
+     *            Sets ctx.network_input and ctx.resize_ratio
      */
-    virtual cv::Mat preprocess(const cv::Mat& img) = 0;
+    virtual void preprocess(DetectionContext& ctx) = 0;
 };
 
 } // namespace pipeline
