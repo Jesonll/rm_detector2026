@@ -43,7 +43,7 @@ void NMSPostprocessor::process(DetectionContext& ctx) {
         }
     }
     
-    ctx.armors = filtered;
+    ctx.results = filtered;
 }
 
 }

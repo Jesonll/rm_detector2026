@@ -23,7 +23,7 @@ OpenVINOEngine::OpenVINOEngine(const std::string& model_path, const std::string&
         // Here we declare the input layout is HWC and color format is BGR, which is common for OpenCV. 
         auto ppp = ov::preprocess::PrePostProcessor(model);
         ppp.input().tensor()
-            .set_element_type(ov::element::u8)
+            .set_element_type(ov::element::f32)
             .set_layout("HWC") // OpenCV Mat is usually HWC (packed)
             .set_color_format(ov::preprocess::ColorFormat::BGR);
             

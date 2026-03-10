@@ -29,8 +29,11 @@ struct DetectionContext {
     // --- Inference Engine Output ---
     cv::Mat inference_outputs; // Raw tensors
 
-    // --- Decoder/Postprocessor Output ---
-    std::vector<Armor> armors; // Final results (using internal struct)
+    // --- Decoder Output ---
+    std::vector<Armor> armors; // Decoded armor detections
+
+    // --- Postprocessor Output ---
+    std::vector<Armor> results; // Final results (using internal struct)
 };
 
 } // namespace pipeline

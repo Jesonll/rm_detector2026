@@ -90,9 +90,11 @@ void YoloDecoder::decode(DetectionContext& ctx) {
             default: armor.type = 8; armor.size = 0; break; // Unknown
         }
 
-        // Keypoints: 3 values (x,y,v) each. Start at index 6.
+        int kp_stride = (features == 14) ? 2 : 3;
+        // Each keypoint has x,y and optionally visibility (v).
+        // Keypoints: x,y or x,y,v . Start at index 6.
         for(int k=0; k<4; ++k) {
-            int base_idx = 6 + k*3;
+            int base_idx = 6 + k*kp_stride;
             if (base_idx + 1 < features) {
                 float kx_raw = det[base_idx];
                 float ky_raw = det[base_idx + 1];

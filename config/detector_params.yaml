@@ -9,11 +9,11 @@ detector_node:
       model_path: "/home/vscode/ws/src/rm_detector2026/models/yolov10-pose/best.xml"
     decoder:
       name: "yolov10_decoder"
-      conf_threshold: 0.5
+      conf_threshold: 0.1
     postprocessor:
       IsUsed: true
       p1:
         name: "nms"
-        iou_threshold: 0.5
+        iou_threshold: 0.1
       # p2:
       #   name: "rule_based_filter"

@@ -25,6 +25,20 @@ public:
      */
     std::vector<Armor> run(const cv::Mat& img);
 
+    /**
+     * @brief Process a context end-to-end (Useful for debugging/testing to inspecting intermediate states)
+     * @param ctx Execution context with ctx.original_image populated
+     * @return List of detections
+     */
+    std::vector<Armor> run(DetectionContext& ctx);
+
+    /**
+     * @brief Save all things in context for debugging
+     * @param ctx The detection context
+     * @param path_prefix The path prefix for saving files
+     */
+    void save_context(const DetectionContext& ctx, const std::string& path_prefix);
+
 private:
     std::shared_ptr<IPreprocessor> preprocessor_;
     std::shared_ptr<IInferenceEngine> engine_;
