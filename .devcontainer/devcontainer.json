@@ -1,0 +1,44 @@
+{
+    "name": "ROS 2 Humble Perception Dev",
+    "dockerFile": "Dockerfile",
+    "build": {
+        "args": {
+            "WORKSPACE": "${containerWorkspaceFolder}"
+        }
+    },
+    "remoteUser": "vscode",
+    "runArgs": [
+        "--network=host",
+        "--privileged",
+        "--cap-add=SYS_PTRACE",
+        "--security-opt", "seccomp=unconfined",
+        "--security-opt", "apparmor=unconfined",
+        // Enable GPU support (uncomment if you have NVIDIA GPU)
+        "--gpus", "all",
+        // Enable Intel GPU support
+        "--device", "/dev/dri",
+        // X11 Forwarding
+        "-e", "DISPLAY=${env:DISPLAY}",
+        "-v", "/tmp/.X11-unix:/tmp/.X11-unix"
+    ],
+    "containerEnv": {
+        "DISPLAY": "${localEnv:DISPLAY}"
+    },
+    // Set workspace folder to match ROS 2 standard
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/ws,type=bind",
+    "workspaceFolder": "/home/vscode/ws",
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-themes",
+                "ms-iot.vscode-ros",
+                "twxs.cmake",
+                "ms-python.python",
+                "eamodio.gitlens"
+            ]
+        }
+    },
+    "postCreateCommand": "sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y"
+}
