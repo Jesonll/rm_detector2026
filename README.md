@@ -43,15 +43,15 @@ Key parameters to modify:
 * `postprocessor`: Enable or disable chaining for `nms` or custom filters.
 
 ### Running the Node
-Launch the detector using the provided launch file. Ensure you remap the `/image_raw` topic if your camera publishes under a different name.
+Launch the detector using the provided launch file. You can configure the namespace and camera name using launch arguments.
 
 ```bash
-ros2 launch rm_detector2026 detector_launch.py
+ros2 launch rm_detector2026 detector_launch.py namespace:=d1 camera_name:=camera
 ```
 
 ### ROS Topics
-* **Subscribes to:** `/image_raw` (`sensor_msgs/msg/Image`)
-* **Publishes to:** `/detector/result` (`rm_interfaces/msg/Detection`) *(Contains both the parsed `Armor` lists and a visualized/annotated image for remote viewing).*
+* **Subscribes to:** `/<camera_name>/image_raw` (`sensor_msgs/msg/Image`)
+* **Publishes to:** `/<camera_name>/detector/result` (`rm_interfaces/msg/Detection`) *(Contains both the parsed `Armor` lists and a visualized/annotated image for remote viewing).*
 
 ---
 
@@ -80,7 +80,7 @@ Testing for this package is divided into three main components:
 #### 2. Pipeline Test
 To bypass ROS complexity entirely when validating model inference and the vision pipeline on static images or video feeds, there is an included Python script:
 ```bash
-python3 scripts/test_image_feed.py
+ros2 run rm_detector2026 test_image_feed.py
 ```
 
 #### 3. Module Test (TODO)

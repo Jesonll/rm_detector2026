@@ -1,4 +1,4 @@
-detector_node:
+/**:
   ros__parameters:
     # construction parameters
     preprocessor:

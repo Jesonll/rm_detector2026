@@ -23,10 +23,10 @@ class TestImageFeed(Node):
         os.makedirs(self.output_dir, exist_ok=True)
         
         # Topics
-        self.publisher_ = self.create_publisher(Image, '/image_raw', 10)
+        self.publisher_ = self.create_publisher(Image, '/camera/image_raw', 10)
         self.subscription = self.create_subscription(
             Detection,
-            '/detector/result',
+            '/camera/detector/result',
             self.result_callback,
             10)
             
